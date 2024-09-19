@@ -9,32 +9,54 @@
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f9;
             color: #333;
-            margin: 20px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h2, h3 {
-            text-align: center; /* Center align headers */
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         h2 {
             color: #4A90E2;
+            margin-bottom: 10px;
         }
         h3 {
             color: #555;
+            margin-bottom: 30px;
         }
         form {
-            margin-bottom: 20px;
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px; /* Limit form width */
         }
         label {
             display: block;
             margin: 10px 0 5px;
+            font-weight: bold;
         }
-        input, select {
+        input[type="number"] {
+            width: calc(100% - 20px); /* Adjust width to shorten right space */
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border 0.3s;
+            -moz-appearance: textfield; /* Hide arrows in Firefox */
+            -webkit-appearance: none; /* Hide arrows in Safari and Chrome */
+            appearance: none; /* Standard */
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0; /* Hide arrows */
+        }
+        input:focus, select:focus {
+            border-color: #4A90E2;
+            outline: none;
+        }
+        select {
             width: 100%;
             padding: 10px;
             margin: 5px 0 15px;
@@ -42,22 +64,21 @@
             border-radius: 4px;
             transition: border 0.3s;
         }
-        input:focus, select:focus {
-            border-color: #4A90E2;
-            outline: none;
-        }
         button {
             background-color: #4A90E2;
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 10px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 100%;
+            margin-top: 15px; /* Add top margin for spacing */
         }
         button:hover {
             background-color: #357ABD;
+            transform: translateY(-2px);
         }
         table {
             width: 100%;
@@ -80,6 +101,20 @@
         tr:hover {
             background-color: #f1f1f1;
         }
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 24px;
+            }
+            h3 {
+                font-size: 18px;
+            }
+            form {
+                padding: 15px;
+            }
+            button {
+                padding: 10px 5px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -90,7 +125,7 @@
         <label for="inputNumber">预配股金额:</label>
         <input type="number" id="inputNumber" min="1" required>
 
-        <label for="presetNumber">配股IPO:</label>
+        <label for="presetNumber">预配股IPO:</label>
         <select id="presetNumber">
             <option value="150,1000">WOL 3D India Limited</option>
             <option value="62,2000">Avi Ansh Textile Limited</option>
@@ -148,4 +183,3 @@
     </script>
 </body>
 </html>
-
