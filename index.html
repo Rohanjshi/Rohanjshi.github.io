@@ -163,27 +163,47 @@
         </tbody>
     </table>
 
-    <script>
-        document.getElementById('divisionForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const inputNumber = document.getElementById('inputNumber').value;
-            const [price, minQty] = document.getElementById('presetNumber').value.split(',').map(Number);
-            if (inputNumber && inputNumber > 0) {
-                const presetNumber = price * minQty;
-                const divisionResult = Math.floor(inputNumber / presetNumber);
-                const closestStock = divisionResult * minQty;
-                const finalNumber = closestStock * price;
-                document.getElementById('priceCell').textContent = price;
-                document.getElementById('minQtyCell').textContent = minQty;
-                document.getElementById('presetNumCell').textContent = presetNumber;
-                document.getElementById('divisionResultCell').textContent = divisionResult;
-                document.getElementById('closestStockCell').textContent = closestStock;
-                document.getElementById('finalNumber').textContent = finalNumber;
-                document.getElementById('resultTable').style.display = 'table';
+     <script>
+    document.getElementById('divisionForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const inputNumber = document.getElementById('inputNumber').value;
+        const [price, minQty] = document.getElementById('presetNumber').value.split(',').map(Number);
+        if (inputNumber && inputNumber > 0) {
+            const presetNumber = price * minQty;
+            const divisionResult = Math.floor(inputNumber / presetNumber);
+
+            // 计算最接近的手数
+            const currentStock = divisionResult * minQty;
+            const nextStock = (divisionResult + 1) * minQty;
+
+            // 使用绝对值计算与输入的比较
+            const currentDifference = Math.abs(inputNumber - currentStock * price);
+            const nextDifference = Math.abs(inputNumber - nextStock * price);
+
+            let closestStock, finalNumber,finalDivsionResult;
+
+            if (currentDifference < nextDifference) {
+                closestStock = currentStock;
+		finalDivsionResult = divisionResult;
             } else {
-                alert('请输入有效的正整数');
+                closestStock = nextStock;
+		finalDivsionResult = divisionResult + 1;
             }
-        });
-    </script>
+
+            finalNumber = closestStock * price;
+
+            // 更新表格内容
+            document.getElementById('priceCell').textContent = price;
+            document.getElementById('minQtyCell').textContent = minQty;
+            document.getElementById('presetNumCell').textContent = presetNumber;
+            document.getElementById('divisionResultCell').textContent = finalDivsionResult;
+            document.getElementById('closestStockCell').textContent = closestStock;
+            document.getElementById('finalNumber').textContent = finalNumber;
+            document.getElementById('resultTable').style.display = 'table';
+        } else {
+            alert('请输入有效的正整数');
+        }
+    });
+</script>
 </body>
 </html>
