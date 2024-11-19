@@ -151,6 +151,7 @@
                 <th>配股手数</th>
                 <th>配股股数</th>
                 <th>配股金额</th>
+		<th>换算塔卡</th>
             </tr>
         </thead>
         <tbody>
@@ -161,6 +162,7 @@
                 <td id="divisionResultCell"></td>
                 <td id="closestStockCell"></td>
                 <td id="finalNumber"></td>
+		<td id="takaNumber"></td>
             </tr>
         </tbody>
     </table>
@@ -195,6 +197,7 @@
             }
 
             finalNumber = closestStock * price;
+	    const takaNumber = finalNumber * 1.42;
 
             // 更新表格内容
             document.getElementById('priceCell').textContent = price;
@@ -203,7 +206,9 @@
             document.getElementById('divisionResultCell').textContent = finalDivsionResult;
             document.getElementById('closestStockCell').textContent = closestStock;
             document.getElementById('finalNumber').textContent = finalNumber;
+	    document.getElementById('takaNumber').textContent = takaNumber;
             document.getElementById('resultTable').style.display = 'table';
+	    
         } else {
             alert('请输入有效的正整数');
         }
