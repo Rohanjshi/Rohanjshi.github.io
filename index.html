@@ -170,8 +170,10 @@
         const [price, minQty] = document.getElementById('presetNumber').value.split(',').map(Number);
         if (inputNumber && inputNumber > 0) {
             const presetNumber = price * minQty;
-            const divisionResult = Math.floor(inputNumber / presetNumber);
-
+            var divisionResult = Math.floor(inputNumber / presetNumber);
+		if(inputNumber < presetNumber){
+			divisionResult = 1;
+		}
             // 计算最接近的手数
             const currentStock = divisionResult * minQty;
             const nextStock = (divisionResult + 1) * minQty;
