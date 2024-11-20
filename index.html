@@ -195,8 +195,8 @@
 		finalDivsionResult = divisionResult + 1;
             }
 
-            finalNumber = Math.floor(closestStock * price);
-	    const takaNumber = finalNumber * 1.42;
+            finalNumber = closestStock * price;
+	    const takaNumber = Math.floor(finalNumber * 1.42);
 
             // 更新表格内容
             document.getElementById('priceCell').textContent = price;
