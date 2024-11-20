@@ -126,7 +126,7 @@
 
     <form id="divisionForm">
         <label for="inputNumber">预配股金额:</label>
-        <input type="number" id="inputNumber" min="1" required>
+        <input placeholder = "输入要分配的金额（塔卡）" type="number" id="inputNumber" min="1" required>
 
         <label for="presetNumber">配股IPO:</label>
         <select id="presetNumber">
@@ -172,11 +172,12 @@
     document.getElementById('divisionForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const inputNumber = document.getElementById('inputNumber').value;
+	const rupeeNumber = inputNumber/1.42; 
         const [price, minQty] = document.getElementById('presetNumber').value.split(',').map(Number);
         if (inputNumber && inputNumber > 0) {
             const presetNumber = price * minQty;
-            var divisionResult = Math.floor(inputNumber / presetNumber);
-		if(inputNumber < presetNumber){
+            var divisionResult = Math.floor(rupeeNumber / presetNumber);
+		if(rupeeNumber < presetNumber){
 			divisionResult = 1;
 		}
             // 计算最接近的手数
@@ -184,8 +185,8 @@
             const nextStock = (divisionResult + 1) * minQty;
 
             // 使用绝对值计算与输入的比较
-            const currentDifference = Math.abs(inputNumber - currentStock * price);
-            const nextDifference = Math.abs(inputNumber - nextStock * price);
+            const currentDifference = Math.abs(rupeeNumber - currentStock * price);
+            const nextDifference = Math.abs(rupeeNumber - nextStock * price);
 
             let closestStock, finalNumber,finalDivsionResult;
 
