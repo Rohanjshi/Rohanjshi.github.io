@@ -23,6 +23,12 @@
             color: #555;
             margin-bottom: 30px;
         }
+	     .display {
+            font-size: 13px;
+            
+            color: #B70103;
+        }
+
         form {
             background: white;
             padding: 20px;
@@ -127,7 +133,9 @@
     <form id="divisionForm">
         <label for="inputNumber">预配股金额:</label>
         <input placeholder = "输入要分配的金额（塔卡）" type="number" id="inputNumber" min="1" required>
-
+	 <div class="display">
+        约等于（印度卢比）：<span id="output">0</span>
+    </div>
         <label for="presetNumber">配股IPO:</label>
         <select id="presetNumber">
 		<option value="180,600">C2C Advanced（折价）</option>
@@ -175,6 +183,12 @@
         const inputNumber = document.getElementById('inputNumber').value;
 	const rupeeNumber = inputNumber/1.42; 
         const [price, minQty] = document.getElementById('presetNumber').value.split(',').map(Number);
+	const output = document.getElementById('output');
+
+        inputNumber.addEventListener('input', () => {
+            output.textContent = '₹  '+Math.floor(inputNumber.value/1.42) || '0';
+        });
+
         if (inputNumber && inputNumber > 0) {
             const presetNumber = price * minQty;
             var divisionResult = Math.floor(rupeeNumber / presetNumber);
