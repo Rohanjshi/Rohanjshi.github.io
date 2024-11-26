@@ -185,8 +185,14 @@
         const [price, minQty] = document.getElementById('presetNumber').value.split(',').map(Number);
 	const output = document.getElementById('output');
 
-        inputNumber.addEventListener('input', () => {
-            output.textContent = '₹  '+Math.floor(inputNumber.value/1.42) || '0';
+       inputNumberElement.addEventListener('input', () => {
+            const inputValue = parseFloat(inputNumberElement.value);
+            if (!isNaN(inputValue) && inputValue > 0) {
+                const rupeeValue = (inputValue / 1.42).toFixed(2);
+                outputElement.textContent = `₹ ${rupeeValue}`;
+            } else {
+                outputElement.textContent = '₹ 0';
+            }
         });
 
         if (inputNumber && inputNumber > 0) {
