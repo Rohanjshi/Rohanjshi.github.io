@@ -183,7 +183,8 @@
         const inputNumber = document.getElementById('inputNumber').value;
 	const rupeeNumber = inputNumber/1.42; 
         const [price, minQty] = document.getElementById('presetNumber').value.split(',').map(Number);
-	const output = document.getElementById('output');
+	const inputNumberElement = document.getElementById('inputNumber');
+        const outputElement = document.getElementById('output');
 
        inputNumberElement.addEventListener('input', () => {
             const inputValue = parseFloat(inputNumberElement.value);
