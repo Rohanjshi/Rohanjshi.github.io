@@ -199,11 +199,11 @@
 	    const takaNumber = Math.floor(finalNumber * 1.42);
 
             // 更新表格内容
-            document.getElementById('priceCell').textContent = price;
-            document.getElementById('minQtyCell').textContent = minQty;
-            document.getElementById('presetNumCell').textContent = presetNumber;
-            document.getElementById('divisionResultCell').textContent = finalDivsionResult;
-            document.getElementById('closestStockCell').textContent = closestStock;
+            document.getElementById('priceCell').textContent = "₹ "+price;
+            document.getElementById('minQtyCell').textContent = minQty+" Shares";
+            document.getElementById('presetNumCell').textContent = "₹ "+presetNumber;
+            document.getElementById('divisionResultCell').textContent = finalDivsionResult+"Lot";
+            document.getElementById('closestStockCell').textContent = closestStock+" Shares";
             document.getElementById('finalNumber').textContent = "₹ "+finalNumber;
 	    document.getElementById('takaNumber').textContent = "৳ "+takaNumber;
             document.getElementById('resultTable').style.display = 'table';
