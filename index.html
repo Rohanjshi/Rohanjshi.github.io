@@ -129,15 +129,11 @@
         <input placeholder = "输入要分配的金额（塔卡）" type="number" id="inputNumber" min="1" required>
         <label for="presetNumber">配股IPO:</label>
         <select id="presetNumber">
-		<option value="180,600">C2C Advanced（折价）</option>
+		<option value="441,34">Suraksha Diagnostic Limited</option>
+		<option value="83,1600">Ganesh Infraworld Limited</option>
+		<option value="108,1200">Agarwal Toughened Glass</option>
+		<option value="75,1600">Abha Power and Steel</option>
 		<option value="73,1600">Apex Ecotech Limited</option>
-		<option value="108,138">NTPC Green Energy</option>
-		<option value="200,600">Lamosaic India</option>
-		<option value="226,600">C2C Advanced Systems</option>
-		<option value="335,400">Rajesh Power Services</option>
-		<option value="148,101">Enviro Infra Engineers</option>
-		<option value="130,1000">Rajputana Biodiesel</option>
-		
         </select>
 
         <button type="submit">计算最接近股数</button>
@@ -209,7 +205,7 @@
             document.getElementById('divisionResultCell').textContent = finalDivsionResult;
             document.getElementById('closestStockCell').textContent = closestStock;
             document.getElementById('finalNumber').textContent = finalNumber;
-	    document.getElementById('takaNumber').textContent = takaNumber;
+	    document.getElementById('takaNumber').textContent = takaNumber+"taka";
             document.getElementById('resultTable').style.display = 'table';
 	    
         } else {
