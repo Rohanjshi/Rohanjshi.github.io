@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指数点位计算器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            width: 700px;
+            background-color: #fff;
+            padding: 30px 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input {
+            margin-bottom: 20px;
+            padding: 12px;
+            width: calc(100% - 24px);
+            font-size: 16px;
+        }
+        .margin-buttons, .leverage-buttons, .trade-buttons, .profit-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .margin-buttons button, .leverage-buttons button {
+            width: 23%;
+        }
+        .trade-buttons button {
+            width: 40%;
+        }
+        .profit-buttons button {
+            width: 18%;
+        }
+        .margin-buttons button.active, .leverage-buttons button.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .trade-buttons button.active.buy {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .trade-buttons button.active.sell {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .profit-buttons button.active {
+            background-color: #28A745; /* 绿色 */
+        }
+        .profit-buttons button.explosion {
+            background-color: #b83c3c; /* 红色 */
+            color: #fff;
+        }
+        .submit-button {
+            display: block;
+            width: 50%;
+            margin: 30px auto 0;
+            background-color: #000;
+            color: #FFD700;
+            font-size: 18px;
+            padding: 12px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .submit-button:hover {
+            background-color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>指数点位计算器</h1>
+        <label for="price">购买指数点位：</label>
+        <input type="number" id="price" placeholder="请输入购买点位" required>
+
+        <label>保证金比例：</label>
+        <div class="margin-buttons">
+            <button type="button" onclick="setMargin(0.25, this)">25%</button>
+            <button type="button" onclick="setMargin(0.50, this)">50%</button>
+            <button type="button" onclick="setMargin(0.75, this)">75%</button>
+            <button type="button" onclick="setMargin(1.00, this)">100%</button>
+        </div>
+
+        <label>杠杆：</label>
+        <div class="leverage-buttons">
+            <button type="button" onclick="setLeverage(25, this)">25x</button>
+            <button type="button" onclick="setLeverage(50, this)">50x</button>
+            <button type="button" onclick="setLeverage(100, this)">100x</button>
+            <button type="button" onclick="setLeverage(150, this)">150x</button>
+            <button type="button" onclick="setLeverage(200, this)">200x</button>
+            <button type="button" onclick="setLeverage(300, this)">300x</button>
+        </div>
+
+        <label>盈利目标(保证金)：</label>
+<div class="profit-buttons">
+    <button type="button" onclick="setProfit(0.05, this)">5%</button>
+    <button type="button" onclick="setProfit(0.10, this)">10%</button>
+    <button type="button" onclick="setProfit(0.15, this)">15%</button>
+    <button type="button" onclick="setProfit(0.20, this)">20%</button>
+    <button type="button" onclick="setProfit(0.25, this)">25%</button>
+    <button type="button" onclick="setProfit(0.30, this)">30%</button>
+    <button type="button" onclick="setProfit(0.35, this)">35%</button>
+    <button type="button" onclick="setProfit(0.40, this)">40%</button>
+    <button type="button" onclick="setProfit(0.45, this)">45%</button>
+    <button type="button" onclick="setProfit('explosion', this)">爆仓</button>
+</div>
+
+        <label>交易类型：</label>
+        <div class="trade-buttons">
+            <button type="button" onclick="setTradeType('buy', this)" class="buy">Buy（买涨）</button>
+            <button type="button" onclick="setTradeType('sell', this)" class="sell">Sell（买跌）</button>
+        </div>
+
+        <button class="submit-button" onclick="calculate()">提交</button>
+
+        <table id="resultTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>交易类型</th>
+                    <th>初始点位</th>
+                    <th>保证金比例</th>
+                    <th>杠杆</th>
+                    <th>目标点位</th>
+                </tr>
+            </thead>
+            <tbody id="resultBody"></tbody>
+        </table>
+    </div>
+
+<script>
+    let margin = 0;
+    let leverage = 0;
+    let tradeType = '';
+    let profit = 0;
+
+    function setMargin(value, button) {
+        margin = value;
+        setActive(button, 'margin-buttons');
+    }
+
+    function setLeverage(value, button) {
+        leverage = value;
+        setActive(button, 'leverage-buttons');
+    }
+
+    function setTradeType(type, button) {
+        tradeType = type;
+        setActive(button, 'trade-buttons');
+    }
+
+    function setProfit(value, button) {
+        profit = value;
+        setActive(button, 'profit-buttons');
+        if (value === 'explosion') {
+            button.classList.add('explosion');
+        } else {
+            document.querySelectorAll('.profit-buttons button').forEach(b => b.classList.remove('explosion'));
+        }
+    }
+
+    function setActive(button, groupClass) {
+        const buttons = document.querySelectorAll(`.${groupClass} button`);
+        buttons.forEach(b => b.classList.remove('active'));
+        button.classList.add('active');
+    }
+
+    function calculate() {
+        const price = parseFloat(document.getElementById('price').value);
+        if (isNaN(price) || price <= 0) {
+            alert('请输入有效的初始点位');
+            return;
+        }
+
+        let targetPrice;
+        if (profit === 'explosion') {
+            targetPrice = tradeType === 'buy' ? price * (1 - 1.05 / (margin * leverage)) : price*1.05 / (margin * leverage) + price;
+        } else {
+            targetPrice = tradeType === 'buy' ? price + (profit * price) / leverage : price - (profit * price) / leverage;
+        }
+
+        const table = document.getElementById('resultTable');
+        const tbody = table.querySelector('tbody');
+        tbody.innerHTML = '';
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${tradeType === 'buy' ? '买涨' : '买跌'}</td>
+            <td>${price}</td>
+            <td>${(margin * 100).toFixed(0)}%</td>
+            <td>${leverage}x</td>
+            <td>${targetPrice.toFixed(2)}</td>
+        `;
+        tbody.appendChild(row);
+        table.style.display = 'table';
+    }
+</script>
+</body>
+</html>
