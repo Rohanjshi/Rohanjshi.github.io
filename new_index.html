@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指数点位计算器</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            padding: 10px;
+        }
+        .container {
+            width: 60%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+        label {
+            display: block;
+            margin-bottom: 2px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95em;
+        }
+        input[type="number"] {
+            margin-bottom: 25px;
+            padding: 15px;
+            width: calc(100% - 34px);
+            font-size: 16px;
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            color: #333;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #6B73FF;
+            box-shadow: 0 0 15px rgba(107, 115, 255, 0.1);
+        }
+        .margin-buttons, .leverage-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .leverage-buttons {
+            grid-template-columns: repeat(6, 1fr);
+        }
+        .trade-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+        .trade-buttons button {
+            flex: 1;
+            padding: 15px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px;
+            font-size: 14px;
+            cursor: pointer;
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            background-color: #fff;
+            color: #555;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(107, 115, 255, 0.1);
+        }
+        .profit-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+        .slider-container {
+            flex-grow: 1;
+            position: relative;
+            height: 48px;
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+        }
+        .profit-slider {
+            width: 93%;
+           height: 18px;
+          -webkit-appearance: none;
+          background: #fff4f4;
+          border-radius: 8px;
+       }
+        .profit-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(107, 115, 255, 0.2);
+        }
+        .profit-value {
+            position: absolute;
+            right: 6px;
+           color: #229f2d;
+           font-weight: 600;
+        }
+        .explosion-button {
+            height: 48px;
+            padding: 0 20px;
+            font-size: 16px;
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            white-space: nowrap;
+        }
+        .active {
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+            color: #fff;
+            border-color: transparent;
+        }
+        .buy.active {
+            background: linear-gradient(135deg, #36D1DC 0%, #5B86E5 100%);
+            border-color: transparent;
+        }
+        .sell.active {
+            background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
+            border-color: transparent;
+        }
+        .explosion {
+            background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
+            color: #fff;
+            border-color: transparent;
+        }
+        .submit-button {
+            display: block;
+            width: 60%;
+            margin: 40px auto 0;
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+            color: #fff;
+            font-size: 16px;
+            padding: 15px;
+            border: none;
+            font-weight: 600;
+            border-radius: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 30px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        th {
+            background-color: #f8f9fa;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>指数点位计算器</h1>
+        
+        <label for="price">购买指数点位：</label>
+        <input type="number" id="price" placeholder="请输入购买点位" required>
+
+        <label>保证金比例：</label>
+        <div class="margin-buttons">
+            <button type="button" onclick="setMargin(0.25, this)">25%</button>
+            <button type="button" onclick="setMargin(0.50, this)">50%</button>
+            <button type="button" onclick="setMargin(0.75, this)">75%</button>
+            <button type="button" onclick="setMargin(1.00, this)">100%</button>
+        </div>
+
+        <label>杠杆：</label>
+        <div class="leverage-buttons">
+            <button type="button" onclick="setLeverage(25, this)">25x</button>
+            <button type="button" onclick="setLeverage(50, this)">50x</button>
+            <button type="button" onclick="setLeverage(100, this)">100x</button>
+            <button type="button" onclick="setLeverage(150, this)">150x</button>
+            <button type="button" onclick="setLeverage(200, this)">200x</button>
+            <button type="button" onclick="setLeverage(300, this)">300x</button>
+        </div>
+
+        <label>交易类型：</label>
+        <div class="trade-buttons">
+            <button type="button" onclick="setTradeType('buy', this)" class="buy">Buy（买涨）</button>
+            <button type="button" onclick="setTradeType('sell', this)" class="sell">Sell（买跌）</button>
+        </div>
+
+        <label>盈利目标(保证金)：</label>
+        <div class="profit-container">
+            <div class="slider-container">
+                <input type="range" id="profit-slider" class="profit-slider" min="0" max="200" step="1" value="0">
+                <div class="profit-value" id="profit-value">0%</div>
+            </div>
+            <button type="button" class="explosion-button" onclick="setProfit('explosion', this)">爆仓</button>
+        </div>
+
+        <button class="submit-button" onclick="calculate()">计算目标点位</button>
+
+        <table id="resultTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>交易类型</th>
+                    <th>初始点位</th>
+                    <th>保证金比例</th>
+                    <th>杠杆</th>
+                    <th>目标点位</th>
+                </tr>
+            </thead>
+            <tbody id="resultBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let margin = 0;
+        let leverage = 0;
+        let tradeType = '';
+        let profit = 0;
+
+        function setMargin(value, button) {
+            margin = value;
+            setActive(button, 'margin-buttons');
+        }
+
+        function setLeverage(value, button) {
+            leverage = value;
+            setActive(button, 'leverage-buttons');
+        }
+
+        function setTradeType(type, button) {
+            tradeType = type;
+            setActive(button, 'trade-buttons');
+        }
+
+        function setProfit(value, button) {
+            if (value === 'explosion') {
+                profit = 'explosion';
+                button.classList.add('explosion');
+                document.getElementById('profit-slider').value = 0;
+                document.getElementById('profit-value').textContent = '0%';
+            } else {
+                document.querySelector('.explosion-button').classList.remove('explosion');
+            }
+        }
+
+        document.getElementById('profit-slider').addEventListener('input', function() {
+            profit = parseInt(this.value) / 100;
+            document.getElementById('profit-value').textContent = `${this.value}%`;
+            document.querySelector('.explosion-button').classList.remove('explosion');
+        });
+
+        function setActive(button, groupClass) {
+            const buttons = document.querySelectorAll(`.${groupClass} button`);
+            buttons.forEach(b => b.classList.remove('active'));
+            button.classList.add('active');
+        }
+
+        function calculate() {
+            const price = parseFloat(document.getElementById('price').value);
+            if (isNaN(price) || price <= 0) {
+                alert('请输入有效的初始点位');
+                return;
+            }
+
+            if (!margin || !leverage || !tradeType) {
+                alert('请选择完整的交易参数');
+                return;
+            }
+
+            let targetPrice;
+            if (profit === 'explosion') {
+                targetPrice = tradeType === 'buy' ? 
+                    price * (1 - 1.05 / (margin * leverage)) : 
+                    price * (1 + 1.05 / (margin * leverage));
+            } else {
+                targetPrice = tradeType === 'buy' ? 
+                    price * (1 + profit / (margin * leverage)) : 
+                    price * (1 - profit / (margin * leverage));
+            }
+
+            const table = document.getElementById('resultTable');
+            const tbody = document.getElementById('resultBody');
+            tbody.innerHTML = '';
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${tradeType === 'buy' ? '买涨' : '买跌'}</td>
+                <td>${price.toFixed(2)}</td>
+                <td>${(margin * 100).toFixed(0)}%</td>
+                <td>${leverage}x</td>
+                <td>${targetPrice.toFixed(2)}</td>
+            `;
+            tbody.appendChild(row);
+            table.style.display = 'table';
+        }
+    </script>
+</body>
+</html>
